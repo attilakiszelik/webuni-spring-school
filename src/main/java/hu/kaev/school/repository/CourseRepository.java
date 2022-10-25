@@ -1,20 +1,17 @@
 package hu.kaev.school.repository;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
+
+import com.querydsl.core.types.Predicate;
 
 import hu.kaev.school.model.Course;
 import hu.kaev.school.model.QCourse;
@@ -51,11 +48,9 @@ public interface CourseRepository extends JpaRepository<Course, Long>,
 	}
 
 	@EntityGraph(attributePaths= {"teachers"})
-	@Query("SELECT c FROM Course c WHERE c.id IN :ids")
-	List<Course> findByIdWithTeachers(List<Long> ids);
+	List<Course> findAllWithTeachers(Predicate predicte);
 	
 	@EntityGraph(attributePaths= {"students"})
-	@Query("SELECT c FROM Course c WHERE c.id IN :ids")
-	List<Course> findByIdWithStudents(List<Long> ids, Sort sort);
+	List<Course> findAllWithStudents(Predicate predicte);
 	
 }

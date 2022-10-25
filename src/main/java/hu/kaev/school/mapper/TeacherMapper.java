@@ -7,7 +7,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import hu.kaev.school.dto.CourseDto;
 import hu.kaev.school.dto.TeacherDto;
+import hu.kaev.school.model.Course;
 import hu.kaev.school.model.Teacher;
 
 @Mapper(componentModel = "spring")
@@ -23,5 +25,8 @@ public interface TeacherMapper {
 	@Named("summary")
 	@Mapping(target="courses", ignore = true)
 	TeacherDto teacherSummaryToDto(Teacher teacher);
+	
+	@Mapping(target="teachers", ignore = true)
+	CourseDto courseToDto(Course course);
 
 }
