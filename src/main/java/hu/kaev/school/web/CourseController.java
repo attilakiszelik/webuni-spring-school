@@ -24,22 +24,20 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/school/course")
+@RequestMapping("/api/courses")
 public class CourseController {
 
 	private final CourseService courseService;
 	private final CourseRepository courseRepository;
 	private final CourseMapper courseMapper;
 
-	@GetMapping("/detailedsearch")
-	public List<CourseDto> getAll(@QuerydslPredicate(root=Course.class) Predicate predicate, @RequestParam Optional<Boolean> full, Pageable pageable) {
+	@GetMapping("/search")
+	public List<CourseDto> search(@QuerydslPredicate(root=Course.class) Predicate predicate, @RequestParam Optional<Boolean> full, Pageable pageable) {
 		
 		boolean isFull = full.orElse(false);
 		
-		List<Course> courses = isFull
-				               ?  courseService.findAllWithRelationships()
-				               : courseService.findAll(predicate);
-		
+		List<Course> courses = courseService.search(predicate);
+				               
 		return isFull
 			   ? courseMapper.coursesToDtos(courses)
 			   : courseMapper.courseSummariesToDtos(courses);

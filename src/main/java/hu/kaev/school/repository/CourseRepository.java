@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
@@ -17,9 +16,9 @@ import hu.kaev.school.model.Course;
 import hu.kaev.school.model.QCourse;
 
 public interface CourseRepository extends JpaRepository<Course, Long>,
-										  JpaSpecificationExecutor<Course>,
 										  QuerydslPredicateExecutor<Course>,
-										  QuerydslBinderCustomizer<QCourse>{
+										  QuerydslBinderCustomizer<QCourse>,
+										  QuerydslWithEntityGraphRepository<Course, Long>{
 	
 	@Override
 	default void customize(QuerydslBindings bindings, QCourse course) {
@@ -46,11 +45,5 @@ public interface CourseRepository extends JpaRepository<Course, Long>,
 		});
 		
 	}
-
-	@EntityGraph(attributePaths= {"teachers"})
-	List<Course> findAllWithTeachers(Predicate predicte);
-	
-	@EntityGraph(attributePaths= {"students"})
-	List<Course> findAllWithStudents(Predicate predicte);
 	
 }
